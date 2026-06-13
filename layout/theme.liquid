@@ -1,25 +1,64 @@
-{%- if settings.favicon != blank -%} {%- endif -%} {% if page_description %} {% endif %} {% if page_description %} {% endif %} {% render 'meta-tags' %} {{ content_for_header }} {% if settings.custom_css != blank %} {% endif %} 
-Skip to content {% if settings.announcement_text != blank %} 
-{{ SETTINGS.ANNOUNCEMENT_TEXT }}
-{% endif %} {% section 'header' %} {{ content_for_layout }} 
-She Grow Hair Co.
-Root-deep rituals for every strand. Crafted with botanical intention, made for you. 
-☹ ☆ ✦ 
-SHOP
-•	All Products
-•	Shampoos
-•	Conditioners
-•	Treatments & Oils
-HELP
-•	FAQs
-•	Shipping
-•	Returns
-•	Contact Us
-COMPANY
-•	Our Story
-•	Journal
-•	Our Ingredients
-•	Privacy Policy
-© {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.
-Made with care for every curl, coil & wave.
-{% section 'cart-drawer' %} 
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ page_title }} | {{ shop.name }}</title>
+
+<!-- MANDATORY TAG 1: Required by Shopify -->
+{{ content_for_header }}
+</head>
+<body>
+
+{%- if settings.favicon != blank -%} {% endif %}
+<a href="#MainContent" class="skip-to-content-link button visually-hidden">Skip to content</a>
+
+{% if settings.announcement_text != blank %}
+{{ settings.announcement_text }}
+{% endif %}
+
+{% section 'header' %}
+
+<main id="MainContent" role="main">
+<!-- MANDATORY TAG 2: This injects your home, product, and collection layouts -->
+{{ content_for_layout }}
+</main>
+
+<footer>
+<div class="footer-content">
+<h2>She Grow Hair Co.</h2>
+<p>Root-deep rituals for every strand. Crafted with botanical harmony.</p>
+
+<h3>SHOP</h3>
+<ul>
+<li>All Products</li>
+<li>Shampoos</li>
+<li>Conditioners</li>
+<li>Treatments & Oils</li>
+</ul>
+
+<h3>HELP</h3>
+<ul>
+<li>FAQs</li>
+<li>Shipping</li>
+<li>Returns</li>
+<li>Contact Us</li>
+</ul>
+
+<h3>COMPANY</h3>
+<ul>
+<li>Our Story</li>
+<li>Journal</li>
+<li>Our Ingredients</li>
+<li>Privacy Policy</li>
+</ul>
+
+<p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p>
+<p>Made with care for every curl, coil & wave.</p>
+</div>
+</footer>
+
+{% section 'cart-drawer' %}
+
+</body>
+</html>
