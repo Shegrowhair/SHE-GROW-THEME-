@@ -1,0 +1,311 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "She Grow — Earthy Luxe",
+    "theme_version": "1.0.0",
+    "theme_author": "She Grow Hair Co.",
+    "theme_documentation_url": "https://shegrowhairco.com",
+    "theme_support_url": "https://shegrowhairco.com/pages/contact"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Page background",
+        "default": "#FAF6F0",
+        "info": "Warm parchment — the base canvas of the brand."
+      },
+      {
+        "type": "color",
+        "id": "color_foreground",
+        "label": "Text & foreground",
+        "default": "#2C1A0E",
+        "info": "Deep espresso brown — high contrast on warm backgrounds."
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary accent (Sienna)",
+        "default": "#8B3A2A",
+        "info": "Rich sienna — buttons, highlights, and key brand moments."
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Secondary accent (Blush)",
+        "default": "#D9A090",
+        "info": "Warm blush — softer brand touch points and hover states."
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Botanical accent (Moss)",
+        "default": "#5A6B47",
+        "info": "Muted moss green — eyebrow labels, ingredient callouts."
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Surface / card background",
+        "default": "#F2EBE1",
+        "info": "Slightly deeper cream — used for cards and feature sections."
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Border color",
+        "default": "#DDD0C0",
+        "info": "Warm sand — subtle dividers and input borders."
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "select",
+        "id": "heading_font_size",
+        "label": "Base heading size",
+        "options": [
+          { "value": "small",  "label": "Small"  },
+          { "value": "medium", "label": "Medium" },
+          { "value": "large",  "label": "Large"  }
+        ],
+        "default": "medium"
+      },
+      {
+        "type": "select",
+        "id": "body_font_size",
+        "label": "Body font size",
+        "options": [
+          { "value": "small",  "label": "Small (14px)"  },
+          { "value": "medium", "label": "Medium (16px)" },
+          { "value": "large",  "label": "Large (18px)"  }
+        ],
+        "default": "medium"
+      }
+    ]
+  },
+  {
+    "name": "Brand & Identity",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image",
+        "info": "Recommended: SVG or PNG with transparent background. Max 400px wide."
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "label": "Logo width (desktop)",
+        "min": 80,
+        "max": 320,
+        "step": 10,
+        "unit": "px",
+        "default": 160
+      },
+      {
+        "type": "range",
+        "id": "logo_width_mobile",
+        "label": "Logo width (mobile)",
+        "min": 60,
+        "max": 200,
+        "step": 10,
+        "unit": "px",
+        "default": 120
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "32x32px PNG recommended."
+      },
+      {
+        "type": "text",
+        "id": "brand_tagline",
+        "label": "Brand tagline",
+        "default": "Root-deep rituals for every strand.",
+        "info": "Displayed in hero sections and footer."
+      }
+    ]
+  },
+  {
+    "name": "Announcement Bar",
+    "settings": [
+      {
+        "type": "text",
+        "id": "announcement_text",
+        "label": "Announcement text",
+        "default": "Free shipping on orders over $50 · Natural. Intentional. Yours.",
+        "info": "Leave blank to hide the bar."
+      },
+      {
+        "type": "url",
+        "id": "announcement_link",
+        "label": "Announcement link (optional)"
+      }
+    ]
+  },
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "select",
+        "id": "header_style",
+        "label": "Header background style",
+        "options": [
+          { "value": "solid",       "label": "Solid"       },
+          { "value": "transparent", "label": "Transparent (over hero)" }
+        ],
+        "default": "solid"
+      },
+      {
+        "type": "checkbox",
+        "id": "header_sticky",
+        "label": "Sticky header",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_locale_selector",
+        "label": "Show language selector",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_currency_selector",
+        "label": "Show currency selector",
+        "default": false
+      }
+    ]
+  },
+  {
+    "name": "Product Cards",
+    "settings": [
+      {
+        "type": "select",
+        "id": "product_card_image_ratio",
+        "label": "Product image aspect ratio",
+        "options": [
+          { "value": "natural",  "label": "Natural"  },
+          { "value": "square",   "label": "Square"   },
+          { "value": "portrait", "label": "Portrait (4:5)" }
+        ],
+        "default": "portrait"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_card_show_vendor",
+        "label": "Show product vendor",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "product_card_show_rating",
+        "label": "Show product rating",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "product_card_hover",
+        "label": "Card hover effect",
+        "options": [
+          { "value": "none",           "label": "None" },
+          { "value": "image_swap",     "label": "Swap to second image" },
+          { "value": "zoom",           "label": "Subtle zoom" }
+        ],
+        "default": "image_swap"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "options": [
+          { "value": "page",   "label": "Page"   },
+          { "value": "drawer", "label": "Drawer (slide-out)" }
+        ],
+        "default": "drawer"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_cart_note",
+        "label": "Enable cart notes",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "url",
+        "id": "social_instagram_link",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "url",
+        "id": "social_tiktok_link",
+        "label": "TikTok URL"
+      },
+      {
+        "type": "url",
+        "id": "social_pinterest_link",
+        "label": "Pinterest URL"
+      },
+      {
+        "type": "url",
+        "id": "social_facebook_link",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "url",
+        "id": "social_youtube_link",
+        "label": "YouTube URL"
+      }
+    ]
+  },
+  {
+    "name": "Search",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "predictive_search_enabled",
+        "label": "Enable predictive search",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_products",
+        "label": "Show product suggestions",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Advanced",
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "custom_css",
+        "label": "Custom CSS",
+        "info": "Add custom CSS here. Applied after theme styles."
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_animations",
+        "label": "Enable scroll animations",
+        "default": true,
+        "info": "Fade-in reveal on scroll. Respects 'prefers-reduced-motion'."
+      }
+    ]
+  }
+]
+

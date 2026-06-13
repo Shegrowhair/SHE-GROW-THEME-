@@ -1,0 +1,99 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "settings": {
+        "heading_line1": "Grow into yourself.",
+        "heading_line2": "Root-deep hair rituals",
+        "subheading": "Botanical formulas crafted to nourish every curl, coil, and wave — from the follicle out.",
+        "cta_label": "Shop the Collection",
+        "cta_url": "/collections/all",
+        "cta2_label": "Our Story",
+        "cta2_url": "/pages/about",
+        "overlay_opacity": 35,
+        "hero_height": "full",
+        "text_position": "bottom",
+        "show_scroll_cue": true
+      },
+      "blocks": {
+        "eyebrow_block": {
+          "type": "eyebrow",
+          "settings": {
+            "eyebrow_text": "She Grow Hair Co."
+          }
+        }
+      },
+      "block_order": ["eyebrow_block"]
+    },
+    "product_collection": {
+      "type": "product-grid",
+      "settings": {
+        "eyebrow": "The Collection",
+        "heading": "Made for your strands.",
+        "subheading": "Four targeted formulas. One mission — healthy, thriving hair at every stage.",
+        "products_to_show": 4,
+        "columns_desktop": "4",
+        "background_style": "default",
+        "show_view_all": true,
+        "view_all_label": "View Full Collection"
+      }
+    },
+    "featured_product": {
+      "type": "featured-product",
+      "settings": {
+        "section_title": "Best Seller",
+        "section_subtitle": "A formula rooted in nature.",
+        "layout": "image_left",
+        "show_badges": true,
+        "show_benefits": true,
+        "show_quantity_selector": true
+      },
+      "blocks": {
+        "badge_1": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Best Seller",
+            "badge_style": "bestseller"
+          }
+        },
+        "subtitle_1": {
+          "type": "subtitle",
+          "settings": {
+            "subtitle": "For dry, thirsty strands craving deep, lasting moisture."
+          }
+        },
+        "benefit_1": {
+          "type": "benefit",
+          "settings": { "benefit_text": "Strengthens roots and reduces breakage" }
+        },
+        "benefit_2": {
+          "type": "benefit",
+          "settings": { "benefit_text": "Infused with cherry extract & botanical oils" }
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": { "benefit_text": "Sulfate-free, color-safe formula" }
+        },
+        "benefit_4": {
+          "type": "benefit",
+          "settings": { "benefit_text": "Safe for all textured hair types" }
+        }
+      },
+      "block_order": ["badge_1", "subtitle_1", "benefit_1", "benefit_2", "benefit_3", "benefit_4"]
+    },
+    "faq_preview": {
+      "type": "faq",
+      "settings": {
+        "heading": "Questions? We've got answers.",
+        "subheading": "Here are the things we get asked most often. For anything else, our team is one message away."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "product_collection",
+    "featured_product",
+    "faq_preview"
+  ]
+}
+

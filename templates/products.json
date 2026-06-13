@@ -1,0 +1,117 @@
+{
+  "sections": {
+    "product_main": {
+      "type": "product-main",
+      "settings": {
+        "show_vendor": false,
+        "show_sku": false,
+        "show_quantity_selector": true,
+        "show_dynamic_checkout": true,
+        "show_share_buttons": true,
+        "show_badges": true,
+        "media_layout": "stacked",
+        "media_size": "large"
+      }
+    },
+    "product_description_tabs": {
+      "type": "product-tabs",
+      "settings": {},
+      "blocks": {
+        "tab_description": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Description",
+            "tab_content_type": "product_description"
+          }
+        },
+        "tab_how_to_use": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "How to Use",
+            "tab_content_type": "metafield",
+            "metafield_key": "custom.how_to_use"
+          }
+        },
+        "tab_ingredients": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Ingredients",
+            "tab_content_type": "metafield",
+            "metafield_key": "custom.ingredients_list"
+          }
+        }
+      },
+      "block_order": [
+        "tab_description",
+        "tab_how_to_use",
+        "tab_ingredients"
+      ]
+    },
+    "product_benefits_bar": {
+      "type": "icon-bar",
+      "settings": {},
+      "blocks": {
+        "icon_cruelty": {
+          "type": "icon_item",
+          "settings": {
+            "icon": "leaf",
+            "label": "Cruelty Free"
+          }
+        },
+        "icon_botanical": {
+          "type": "icon_item",
+          "settings": {
+            "icon": "botanical",
+            "label": "Botanical Formula"
+          }
+        },
+        "icon_sulfate": {
+          "type": "icon_item",
+          "settings": {
+            "icon": "check",
+            "label": "Sulfate Free"
+          }
+        },
+        "icon_shipping": {
+          "type": "icon_item",
+          "settings": {
+            "icon": "truck",
+            "label": "Free Shipping $50+"
+          }
+        }
+      },
+      "block_order": [
+        "icon_cruelty",
+        "icon_botanical",
+        "icon_sulfate",
+        "icon_shipping"
+      ]
+    },
+    "product_reviews": {
+      "type": "product-reviews",
+      "settings": {
+        "heading": "What our customers say"
+      }
+    },
+    "related_products": {
+      "type": "product-grid",
+      "settings": {
+        "eyebrow": "Complete the ritual",
+        "heading": "You may also love",
+        "subheading": "",
+        "products_to_show": 4,
+        "columns_desktop": "4",
+        "background_style": "surface",
+        "show_view_all": false
+      }
+    }
+  },
+  "order": [
+    "product_main",
+    "product_description_tabs",
+    "product_benefits_bar",
+    "product_reviews",
+    "related_products"
+  ]
+}
+

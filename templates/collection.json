@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "collection_main": {
+      "type": "collection",
+      "settings": {
+        "eyebrow": "The Collection",
+        "default_description": "Four targeted formulas for every wash day — crafted for textured hair, rooted in botanicals.",
+        "products_per_page": 12,
+        "columns_desktop": "3",
+        "show_filter_sidebar": true,
+        "show_sort_by": true
+      }
+    }
+  },
+  "order": [
+    "collection_main"
+  ]
+}
+

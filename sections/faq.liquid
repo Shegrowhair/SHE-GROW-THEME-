@@ -1,0 +1,473 @@
+{% comment %}
+  sections/faq.liquid
+  She Grow Hair Co. — FAQ Accordion Section
+  Online Store 2.0 compatible — page template + homepage use
+{% endcomment %}
+
+<style>
+  /* =============================================
+     FAQ — She Grow Hair Co.
+     ============================================= */
+  .faq-section {
+    background-color: var(--color-background);
+  }
+
+  .faq__header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+  }
+
+  .faq__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 400;
+    color: var(--color-foreground);
+    line-height: 1.1;
+    margin-bottom: var(--space-4);
+  }
+
+  .faq__subtitle {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 300;
+    color: rgba(44,26,14,0.6);
+    max-width: 50ch;
+    margin: 0 auto;
+    line-height: 1.75;
+  }
+
+  /* Category tabs */
+  .faq__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-10);
+  }
+
+  .faq__tab {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: var(--space-2) var(--space-5);
+    border: 1.5px solid var(--color-border);
+    background: none;
+    color: rgba(44,26,14,0.6);
+    cursor: pointer;
+    border-radius: 0;
+    transition: background-color var(--transition-base),
+                color var(--transition-base),
+                border-color var(--transition-base);
+  }
+
+  .faq__tab:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .faq__tab.is-active {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+
+  /* Two-column layout on desktop */
+  .faq__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  @media (min-width: 900px) {
+    .faq__layout {
+      grid-template-columns: 1fr 1fr;
+      gap: 0 var(--space-10);
+      align-items: start;
+    }
+  }
+
+  /* Accordion */
+  .faq__group {
+    display: none;
+  }
+
+  .faq__group.is-visible {
+    display: contents;
+  }
+
+  .faq__item {
+    border-bottom: 1px solid var(--color-border);
+    break-inside: avoid;
+  }
+
+  .faq__item:first-child {
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* Hide the duplicate top border in column 2 */
+  @media (min-width: 900px) {
+    .faq__item:nth-child(2) {
+      border-top: 1px solid var(--color-border);
+    }
+  }
+
+  .faq__question {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    background: none;
+    border: none;
+    padding: var(--space-5) 0;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .faq__question-text {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 400;
+    color: var(--color-foreground);
+    line-height: 1.3;
+    transition: color var(--transition-base);
+  }
+
+  .faq__question:hover .faq__question-text {
+    color: var(--color-primary);
+  }
+
+  .faq__icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border: 1.5px solid var(--color-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--transition-base),
+                border-color var(--transition-base),
+                transform var(--transition-base);
+  }
+
+  .faq__icon svg {
+    width: 12px;
+    height: 12px;
+    color: var(--color-foreground);
+    transition: transform var(--transition-base);
+  }
+
+  .faq__item.is-open .faq__icon {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .faq__item.is-open .faq__icon svg {
+    color: #fff;
+    transform: rotate(45deg);
+  }
+
+  .faq__answer {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 350ms cubic-bezier(0.4, 0, 0.2, 1),
+                padding 350ms ease;
+  }
+
+  .faq__item.is-open .faq__answer {
+    max-height: 600px;
+  }
+
+  .faq__answer-inner {
+    padding-bottom: var(--space-6);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(44,26,14,0.7);
+  }
+
+  .faq__answer-inner a {
+    color: var(--color-primary);
+    border-bottom: 1px solid currentColor;
+    transition: opacity var(--transition-base);
+  }
+
+  .faq__answer-inner a:hover { opacity: 0.65; }
+
+  .faq__answer-inner strong {
+    font-weight: 500;
+    color: var(--color-foreground);
+  }
+
+  /* Contact CTA at bottom */
+  .faq__contact {
+    text-align: center;
+    margin-top: var(--space-16);
+    padding: var(--space-10) var(--space-8);
+    background-color: var(--color-surface);
+    border-top: 3px solid var(--color-primary);
+  }
+
+  .faq__contact-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 400;
+    color: var(--color-foreground);
+    margin-bottom: var(--space-3);
+  }
+
+  .faq__contact-body {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 300;
+    color: rgba(44,26,14,0.6);
+    margin-bottom: var(--space-6);
+  }
+</style>
+
+<section
+  class="faq-section section-padding"
+  id="FAQ-{{ section.id }}"
+  aria-label="Frequently asked questions"
+>
+  <div class="page-width">
+
+    <div class="faq__header">
+      <span class="eyebrow">Support</span>
+      <h2 class="faq__title">{{ section.settings.heading | default: 'Frequently Asked Questions' }}</h2>
+      <p class="faq__subtitle">{{ section.settings.subheading | default: "Everything you want to know about She Grow Hair Co., our formulas, and caring for your strands." }}</p>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="faq__tabs" role="tablist" aria-label="FAQ categories">
+      <button class="faq__tab is-active" data-category="all" role="tab" aria-selected="true">All</button>
+      <button class="faq__tab" data-category="products" role="tab" aria-selected="false">Products</button>
+      <button class="faq__tab" data-category="haircare" role="tab" aria-selected="false">Hair Care</button>
+      <button class="faq__tab" data-category="orders" role="tab" aria-selected="false">Orders & Shipping</button>
+      <button class="faq__tab" data-category="ingredients" role="tab" aria-selected="false">Ingredients</button>
+    </div>
+
+    <!-- FAQ Items -->
+    <div class="faq__layout" id="FAQContainer-{{ section.id }}">
+
+      {%- comment -%}
+        FAQ data — in a real implementation these would come from
+        section.blocks for merchant customization. Provided here as
+        default copy for She Grow Hair Co.
+      {%- endcomment -%}
+
+      {%- assign faq_items = '
+        products|What makes She Grow Hair Co. different from other hair care brands?|At She Grow, we do not use filler ingredients or chasing trends. Every formula in our lineup is built around a targeted hair concern — cleansing, moisturizing, conditioning, or follicle repair — and formulated with botanical actives that are backed by science. We specifically design for textured, Black, and curly hair types that are often underserved by mainstream brands.,
+        products|Can I use She Grow products on color-treated or chemically processed hair?|Yes. All of our formulas are sulfate-free and pH-balanced, which makes them safe for color-treated, relaxed, and chemically processed hair. The Moisturizing Shampoo and Conditioner are especially gentle for processed strands.,
+        products|Which products are best for natural hair growth?|The <strong>Intensive Follicle Repair Oil</strong> is our targeted growth treatment. It is formulated with rosemary oil, castor oil, and biotin to stimulate follicle activity and reduce shedding. Use it 2–3 times per week massaged directly into the scalp before washing.,
+        products|How do I build a She Grow routine?|A complete routine looks like this: (1) <strong>Cherry Detox Shampoo</strong> once a week to deep-cleanse the scalp. (2) <strong>Moisturizing Shampoo</strong> for regular wash days. (3) <strong>Moisturizing Conditioner</strong> after every wash. (4) <strong>Intensive Follicle Repair Oil</strong> 2–3x per week as a pre-wash or overnight treatment.,
+        haircare|How often should I wash my hair with She Grow shampoos?|For most textured hair types we recommend washing 1–2 times per week. Use the Cherry Detox Shampoo once weekly for a deeper scalp cleanse and the Moisturizing Shampoo for mid-week wash days if needed. If your scalp is oily you may wash more frequently.,
+        haircare|Can I use the Moisturizing Conditioner as a deep conditioner?|Yes. Apply generously after shampooing and leave on for 15–30 minutes under a shower cap for a deeper conditioning treatment. The longer you leave it in the more moisture your hair will absorb.,
+        haircare|Is the Follicle Repair Oil safe for sensitive scalps?|Our oil is formulated without mineral oil or silicones and is free of harsh fragrances. Most sensitive scalp users tolerate it well. We always recommend a patch test on your inner wrist 24 hours before first use if you have known sensitivities.,
+        haircare|Will She Grow products work for low-porosity hair?|Yes. For low-porosity hair we recommend applying the conditioner to hair that is still warm from the shower — the heat helps open the cuticle so moisture can penetrate. The Follicle Repair Oil should be used on the scalp only rather than lengths to avoid buildup.,
+        ingredients|Are She Grow products sulfate-free and paraben-free?|All She Grow products are free from sulfates (SLS and SLES), parabens, and silicones. We also avoid artificial colors and animal-derived ingredients.,
+        ingredients|Are your products cruelty-free?|Absolutely. She Grow Hair Co. is 100% cruelty-free. We never test on animals and partner only with suppliers who share that commitment.,
+        ingredients|What is cherry extract and why is it in the shampoo?|Cherry extract is rich in Vitamin A and C and powerful antioxidants. In our Cherry Detox Shampoo it works as a scalp detoxifier — drawing out product buildup and environmental pollutants while protecting the follicle from oxidative stress. It also gives the shampoo its gorgeous natural color.,
+        orders|Do you offer free shipping?|We offer free standard shipping on all US orders over $50. Orders under $50 ship at a flat rate. Expedited shipping options are available at checkout.,
+        orders|How long does shipping take?|Standard shipping takes 5–7 business days. Expedited options (2–3 business days) are available at checkout. You will receive a tracking number by email once your order ships.,
+        orders|What is your return policy?|We want you to love your She Grow products. If you are unsatisfied for any reason please contact us within 30 days of delivery and we will make it right with a replacement or full refund — no questions asked.,
+        orders|Do you ship internationally?|We currently ship within the United States. International shipping is coming soon — join our email list to be notified when your country is added.
+      ' | split: ',' -%}
+
+      {%- assign item_counter = 0 -%}
+
+      {%- for faq_raw in faq_items -%}
+        {%- assign faq_parts = faq_raw | strip | split: '|' -%}
+        {%- if faq_parts.size >= 3 -%}
+          {%- assign faq_category = faq_parts[0] | strip -%}
+          {%- assign faq_question = faq_parts[1] | strip -%}
+          {%- assign faq_answer   = faq_parts[2] | strip -%}
+          {%- assign item_counter = item_counter | plus: 1 -%}
+
+          <div
+            class="faq__item"
+            data-category="{{ faq_category }}"
+            id="FAQItem-{{ section.id }}-{{ item_counter }}"
+          >
+            <button
+              class="faq__question"
+              aria-expanded="false"
+              aria-controls="FAQAnswer-{{ section.id }}-{{ item_counter }}"
+              id="FAQBtn-{{ section.id }}-{{ item_counter }}"
+            >
+              <span class="faq__question-text">{{ faq_question }}</span>
+              <span class="faq__icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+              </span>
+            </button>
+            <div
+              class="faq__answer"
+              id="FAQAnswer-{{ section.id }}-{{ item_counter }}"
+              role="region"
+              aria-labelledby="FAQBtn-{{ section.id }}-{{ item_counter }}"
+            >
+              <div class="faq__answer-inner">{{ faq_answer }}</div>
+            </div>
+          </div>
+
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- comment -%} Render blocks-based FAQs if merchant adds custom ones {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'faq_item' and block.settings.question != blank -%}
+          {%- assign block_num = item_counter | plus: forloop.index -%}
+          <div
+            class="faq__item"
+            data-category="{{ block.settings.category | default: 'products' }}"
+            id="FAQItem-{{ section.id }}-block-{{ block_num }}"
+            {{ block.shopify_attributes }}
+          >
+            <button
+              class="faq__question"
+              aria-expanded="false"
+              aria-controls="FAQAnswer-{{ section.id }}-block-{{ block_num }}"
+            >
+              <span class="faq__question-text">{{ block.settings.question }}</span>
+              <span class="faq__icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+              </span>
+            </button>
+            <div class="faq__answer" id="FAQAnswer-{{ section.id }}-block-{{ block_num }}" role="region">
+              <div class="faq__answer-inner">{{ block.settings.answer }}</div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+
+    </div>
+
+    <!-- Still have questions CTA -->
+    <div class="faq__contact">
+      <h3 class="faq__contact-heading">Still have a question?</h3>
+      <p class="faq__contact-body">Our team is here for you. Reach out and we'll get back to you within one business day.</p>
+      <a href="/pages/contact" class="btn btn-primary">Contact Us</a>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  (function () {
+    var sectionId = '{{ section.id }}';
+    var container = document.getElementById('FAQContainer-' + sectionId);
+    if (!container) return;
+
+    // Accordion
+    container.querySelectorAll('.faq__question').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var item   = btn.closest('.faq__item');
+        var isOpen = item.classList.contains('is-open');
+
+        // Close all
+        container.querySelectorAll('.faq__item.is-open').forEach(function (openItem) {
+          openItem.classList.remove('is-open');
+          openItem.querySelector('.faq__question').setAttribute('aria-expanded', 'false');
+        });
+
+        // Open clicked if it was closed
+        if (!isOpen) {
+          item.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // Category tabs
+    var tabs = document.querySelectorAll('#FAQ-' + sectionId + ' .faq__tab');
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var cat = tab.dataset.category;
+
+        tabs.forEach(function (t) {
+          t.classList.remove('is-active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('is-active');
+        tab.setAttribute('aria-selected', 'true');
+
+        container.querySelectorAll('.faq__item').forEach(function (item) {
+          if (cat === 'all' || item.dataset.category === cat) {
+            item.style.display = '';
+          } else {
+            item.style.display = 'none';
+            item.classList.remove('is-open');
+            var q = item.querySelector('.faq__question');
+            if (q) q.setAttribute('aria-expanded', 'false');
+          }
+        });
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "class": "section-faq",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Section subheading",
+      "default": "Everything you want to know about She Grow Hair Co., our formulas, and caring for your strands."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "Custom FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer"
+        },
+        {
+          "type": "select",
+          "id": "category",
+          "label": "Category",
+          "options": [
+            { "value": "products",    "label": "Products"         },
+            { "value": "haircare",    "label": "Hair Care"        },
+            { "value": "ingredients", "label": "Ingredients"      },
+            { "value": "orders",      "label": "Orders & Shipping"}
+          ],
+          "default": "products"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ"
+    }
+  ]
+}
+{% endschema %}
+

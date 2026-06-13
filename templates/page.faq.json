@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "faq_content": {
+      "type": "faq",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "subheading": "Everything you want to know about She Grow Hair Co., our formulas, ingredients, and caring for your strands."
+      },
+      "blocks": {},
+      "block_order": []
+    }
+  },
+  "order": [
+    "faq_content"
+  ]
+}
+

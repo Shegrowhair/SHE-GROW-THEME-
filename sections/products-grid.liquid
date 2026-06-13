@@ -1,0 +1,546 @@
+{% comment %}
+  sections/product-grid.liquid
+  She Grow Hair Co. — Product Collection Grid
+  Online Store 2.0 compatible — homepage + collection pages
+{% endcomment %}
+
+{%- liquid
+  assign section_eyebrow  = section.settings.eyebrow
+  assign section_heading  = section.settings.heading
+  assign section_sub      = section.settings.subheading
+  assign collection       = section.settings.collection
+  assign products_to_show = section.settings.products_to_show
+  assign columns_desktop  = section.settings.columns_desktop
+  assign show_cta         = section.settings.show_view_all
+  assign cta_label        = section.settings.view_all_label
+  assign bg_style         = section.settings.background_style
+
+  if collection != blank
+    assign products = collection.products | limit: products_to_show
+  endif
+-%}
+
+<style>
+  /* =============================================
+     PRODUCT GRID — She Grow Hair Co.
+     ============================================= */
+  .product-grid-section {
+    background-color: {% if bg_style == 'surface' %}var(--color-surface){% else %}var(--color-background){% endif %};
+  }
+
+  .product-grid-section__header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+  }
+
+  .product-grid-section__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 400;
+    color: var(--color-foreground);
+    line-height: 1.1;
+    margin-bottom: var(--space-4);
+  }
+
+  .product-grid-section__sub {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 300;
+    color: rgba(44,26,14,0.6);
+    max-width: 52ch;
+    margin: 0 auto;
+    line-height: 1.75;
+  }
+
+  /* Grid layout */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 768px) {
+    .product-grid {
+      gap: var(--space-6);
+      grid-template-columns: repeat(
+        {% if columns_desktop == '2' %}2{% elsif columns_desktop == '3' %}3{% else %}4{% endif %},
+        1fr
+      );
+    }
+  }
+
+  @media (max-width: 479px) {
+    .product-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Product Card */
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-background);
+    position: relative;
+    group: true;
+  }
+
+  .product-card__image-wrap {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-border);
+    aspect-ratio: 4 / 5;
+  }
+
+  .product-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .product-card__img--secondary {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity var(--transition-slow), transform 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .product-card:hover .product-card__img--primary {
+    transform: scale(1.04);
+  }
+
+  .product-card:hover .product-card__img--secondary {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+
+  /* Card badge */
+  .product-card__badge {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-3);
+    z-index: 2;
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px var(--space-2);
+    background-color: var(--color-primary);
+    color: #fff;
+  }
+
+  .product-card__badge--new {
+    background-color: var(--color-accent);
+  }
+
+  /* Quick add button — reveals on hover */
+  .product-card__quick-add {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    background-color: rgba(44,26,14,0.88);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: var(--space-3);
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity var(--transition-base), transform var(--transition-base);
+    width: 100%;
+  }
+
+  .product-card:hover .product-card__quick-add,
+  .product-card:focus-within .product-card__quick-add {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Card body */
+  .product-card__body {
+    padding: var(--space-4) var(--space-1) var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    flex: 1;
+  }
+
+  .product-card__vendor {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .product-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    color: var(--color-foreground);
+    line-height: 1.25;
+    text-decoration: none;
+  }
+
+  .product-card__title:hover {
+    color: var(--color-primary);
+  }
+
+  .product-card__tagline {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-style: italic;
+    font-weight: 300;
+    color: rgba(44,26,14,0.55);
+    line-height: 1.5;
+  }
+
+  .product-card__price-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+  }
+
+  .product-card__price {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 400;
+    color: var(--color-foreground);
+  }
+
+  .product-card__price--compare {
+    font-size: var(--text-base);
+    color: rgba(44,26,14,0.35);
+    text-decoration: line-through;
+  }
+
+  .product-card__price--sale {
+    color: var(--color-primary);
+  }
+
+  /* Swatch row for variants */
+  .product-card__swatches {
+    display: flex;
+    gap: var(--space-1);
+    margin-top: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  .swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(44,26,14,0.15);
+    cursor: pointer;
+    transition: border-color var(--transition-base);
+  }
+
+  .swatch:hover { border-color: var(--color-foreground); }
+
+  /* View all CTA */
+  .product-grid__footer {
+    text-align: center;
+    margin-top: var(--space-12);
+  }
+
+  /* Empty / placeholder state */
+  .product-card--placeholder .product-card__image-wrap {
+    background: linear-gradient(135deg, var(--color-border) 0%, var(--color-surface) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-card--placeholder .placeholder-svg {
+    width: 64px;
+    height: 64px;
+    opacity: 0.2;
+  }
+
+  .product-card--placeholder .product-card__title {
+    background-color: var(--color-border);
+    color: transparent;
+    border-radius: 2px;
+    width: 70%;
+  }
+
+  .product-card--placeholder .product-card__price {
+    background-color: var(--color-border);
+    color: transparent;
+    border-radius: 2px;
+    width: 40%;
+  }
+</style>
+
+<section
+  class="product-grid-section section-padding"
+  id="ProductGrid-{{ section.id }}"
+  aria-label="{{ section_heading | default: 'Products' }}"
+>
+  <div class="page-width">
+
+    {%- if section_eyebrow != blank or section_heading != blank or section_sub != blank -%}
+      <header class="product-grid-section__header">
+        {%- if section_eyebrow != blank -%}
+          <span class="eyebrow">{{ section_eyebrow }}</span>
+        {%- endif -%}
+        {%- if section_heading != blank -%}
+          <h2 class="product-grid-section__title">{{ section_heading }}</h2>
+        {%- endif -%}
+        {%- if section_sub != blank -%}
+          <p class="product-grid-section__sub">{{ section_sub }}</p>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
+    <ul class="product-grid" role="list" aria-label="Products">
+      {%- if collection != blank and collection.products.size > 0 -%}
+
+        {%- for product in products -%}
+          {%- liquid
+            assign first_variant = product.first_available_variant
+            assign is_on_sale = false
+            if first_variant.compare_at_price > first_variant.price
+              assign is_on_sale = true
+            endif
+          -%}
+          <li class="product-card" id="ProductCard-{{ product.id }}">
+
+            <!-- Image -->
+            <div class="product-card__image-wrap">
+              {%- if product.available == false -%}
+                <span class="product-card__badge">Sold Out</span>
+              {%- elsif product.tags contains 'new' -%}
+                <span class="product-card__badge product-card__badge--new">New</span>
+              {%- elsif is_on_sale -%}
+                <span class="product-card__badge">Sale</span>
+              {%- endif -%}
+
+              <a href="{{ product.url }}" aria-label="{{ product.title }}" tabindex="-1">
+                {%- if product.featured_image != blank -%}
+                  {{
+                    product.featured_image
+                    | image_url: width: 600
+                    | image_tag:
+                      class: 'product-card__img product-card__img--primary',
+                      alt: product.featured_image.alt | default: product.title,
+                      loading: 'lazy',
+                      widths: '300, 450, 600',
+                      sizes: '(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw'
+                  }}
+                  {%- if product.images.size > 1 -%}
+                    {{
+                      product.images[1]
+                      | image_url: width: 600
+                      | image_tag:
+                        class: 'product-card__img product-card__img--secondary',
+                        alt: product.images[1].alt | default: product.title,
+                        loading: 'lazy',
+                        widths: '300, 450, 600',
+                        sizes: '(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw'
+                    }}
+                  {%- endif -%}
+                {%- else -%}
+                  {{ 'product-1' | placeholder_svg_tag: 'product-card__img product-card__img--primary' }}
+                {%- endif -%}
+              </a>
+
+              {%- if product.available -%}
+                <button
+                  class="product-card__quick-add"
+                  data-product-id="{{ product.id }}"
+                  data-variant-id="{{ first_variant.id }}"
+                  aria-label="Quick add {{ product.title }} to cart"
+                >
+                  + Quick Add
+                </button>
+              {%- endif -%}
+            </div>
+
+            <!-- Info -->
+            <div class="product-card__body">
+              {%- if product.vendor != blank -%}
+                <span class="product-card__vendor">{{ product.vendor }}</span>
+              {%- endif -%}
+
+              <a href="{{ product.url }}" class="product-card__title">{{ product.title }}</a>
+
+              {%- comment -%} Pull first metafield tagline or use first sentence of description {%- endcomment -%}
+              {%- if product.metafields.custom.tagline != blank -%}
+                <p class="product-card__tagline">{{ product.metafields.custom.tagline }}</p>
+              {%- elsif product.description != blank -%}
+                <p class="product-card__tagline">{{ product.description | strip_html | truncate: 70 }}</p>
+              {%- endif -%}
+
+              <div class="product-card__price-row">
+                {%- if is_on_sale -%}
+                  <span class="product-card__price product-card__price--sale">{{ first_variant.price | money }}</span>
+                  <span class="product-card__price product-card__price--compare">{{ first_variant.compare_at_price | money }}</span>
+                {%- else -%}
+                  <span class="product-card__price">{{ first_variant.price | money }}</span>
+                {%- endif -%}
+              </div>
+            </div>
+
+          </li>
+        {%- endfor -%}
+
+      {%- else -%}
+
+        {%- comment -%} Placeholder cards for theme editor preview {%- endcomment -%}
+        {%- assign placeholder_products = 'Cherry Detox Shampoo,Moisturizing Shampoo,Moisturizing Conditioner,Intensive Follicle Repair Oil' | split: ',' -%}
+        {%- assign placeholder_prices = '$26.00,$24.00,$24.00,$38.00' | split: ',' -%}
+        {%- assign placeholder_tags = 'Deep Cleanse & Detox,Hydration & Softness,Moisture & Repair,Follicle Stimulation' | split: ',' -%}
+
+        {%- for i in (1..4) -%}
+          {%- assign idx = forloop.index0 -%}
+          <li class="product-card product-card--placeholder">
+            <div class="product-card__image-wrap">
+              {{ 'product-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            <div class="product-card__body">
+              <span class="product-card__vendor">She Grow Hair Co.</span>
+              <span class="product-card__title">{{ placeholder_products[idx] }}</span>
+              <p class="product-card__tagline">{{ placeholder_tags[idx] }}</p>
+              <div class="product-card__price-row">
+                <span class="product-card__price">{{ placeholder_prices[idx] }}</span>
+              </div>
+            </div>
+          </li>
+        {%- endfor -%}
+
+      {%- endif -%}
+    </ul>
+
+    {%- if show_cta and collection != blank -%}
+      <div class="product-grid__footer">
+        <a href="{{ collection.url }}" class="btn btn-outline">
+          {{ cta_label | default: 'View Full Collection' }}
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<script>
+  // Quick add to cart
+  document.querySelectorAll('#ProductGrid-{{ section.id }} .product-card__quick-add').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      var variantId = btn.dataset.variantId;
+      if (!variantId) return;
+
+      btn.textContent = 'Adding…';
+      btn.disabled = true;
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: variantId, quantity: 1 })
+      })
+      .then(function(res) { return res.json(); })
+      .then(function() {
+        btn.textContent = '✓ Added';
+        setTimeout(function() {
+          btn.textContent = '+ Quick Add';
+          btn.disabled = false;
+        }, 2000);
+        // Dispatch cart update event for cart drawer integration
+        document.dispatchEvent(new CustomEvent('cart:updated'));
+      })
+      .catch(function() {
+        btn.textContent = 'Try again';
+        btn.disabled = false;
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Grid",
+  "tag": "section",
+  "class": "section-product-grid",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection to display"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "The Collection"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Made for your strands."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Section subheading",
+      "default": "Four targeted formulas. One mission — healthy, thriving hair at every stage."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns (desktop)",
+      "options": [
+        { "value": "2", "label": "2 columns" },
+        { "value": "3", "label": "3 columns" },
+        { "value": "4", "label": "4 columns" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "background_style",
+      "label": "Background",
+      "options": [
+        { "value": "default", "label": "Default (parchment)" },
+        { "value": "surface", "label": "Surface (slightly deeper)" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View all' button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "'View all' button text",
+      "default": "View Full Collection"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Grid"
+    }
+  ]
+}
+{% endschema %}
+

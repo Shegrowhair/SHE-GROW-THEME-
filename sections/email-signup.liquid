@@ -1,0 +1,432 @@
+{% comment %}
+  sections/email-signup.liquid
+  She Grow Hair Co. — Newsletter / Email Signup Banner
+  Online Store 2.0 compatible
+{% endcomment %}
+
+<style>
+  /* =============================================
+     EMAIL SIGNUP — She Grow Hair Co.
+     ============================================= */
+  .email-signup {
+    background-color: {% if section.settings.style == 'earthy' %}var(--color-primary){% elsif section.settings.style == 'botanical' %}var(--color-accent){% else %}var(--color-surface){% endif %};
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Botanical texture overlay */
+  .email-signup::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(0,0,0,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .email-signup__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    align-items: center;
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .email-signup__inner {
+      grid-template-columns: 1fr 1fr;
+      text-align: left;
+      gap: var(--space-12);
+    }
+  }
+
+  .email-signup__eyebrow {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: var(--space-3);
+  }
+
+  .email-signup__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    font-weight: 400;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: var(--space-3);
+  }
+
+  .email-signup__title em {
+    font-style: italic;
+  }
+
+  .email-signup__desc {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 300;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.7;
+    max-width: 44ch;
+  }
+
+  @media (min-width: 768px) {
+    .email-signup__desc { max-width: none; }
+  }
+
+  /* Perks list */
+  .email-signup__perks {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+  }
+
+  @media (max-width: 767px) {
+    .email-signup__perks {
+      align-items: center;
+    }
+  }
+
+  .email-signup__perk {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 300;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .email-signup__perk::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.5);
+    flex-shrink: 0;
+  }
+
+  /* Form side */
+  .email-signup__form-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .email-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 480px) {
+    .email-form {
+      flex-direction: row;
+      align-items: stretch;
+    }
+  }
+
+  .email-form__input {
+    flex: 1;
+    height: 52px;
+    padding: 0 var(--space-4);
+    background-color: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.25);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 300;
+    color: #fff;
+    border-radius: var(--border-radius);
+    transition: border-color var(--transition-base), background-color var(--transition-base);
+    outline: none;
+    -webkit-appearance: none;
+  }
+
+  .email-form__input::placeholder {
+    color: rgba(255,255,255,0.45);
+    font-style: italic;
+  }
+
+  .email-form__input:focus {
+    border-color: rgba(255,255,255,0.7);
+    background-color: rgba(255,255,255,0.18);
+  }
+
+  .email-form__btn {
+    height: 52px;
+    padding: 0 var(--space-8);
+    background-color: #fff;
+    color: var(--color-primary);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1.5px solid #fff;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    white-space: nowrap;
+    transition: background-color var(--transition-base), color var(--transition-base);
+    flex-shrink: 0;
+  }
+
+  .email-form__btn:hover {
+    background-color: transparent;
+    color: #fff;
+  }
+
+  /* Success message */
+  .email-form__success {
+    display: none;
+    background-color: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.25);
+    padding: var(--space-4) var(--space-6);
+    border-radius: var(--border-radius);
+  }
+
+  .email-form__success.is-visible { display: block; }
+
+  .email-form__success p {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 300;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.6;
+    max-width: none;
+  }
+
+  .email-form__success strong {
+    font-weight: 500;
+    color: #fff;
+    display: block;
+    margin-bottom: var(--space-1);
+  }
+
+  /* Privacy note */
+  .email-signup__privacy {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 300;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.04em;
+  }
+
+  /* Error */
+  .email-form__error {
+    display: none;
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    color: rgba(255,200,180,0.9);
+    margin-top: var(--space-1);
+  }
+
+  .email-form__error.is-visible { display: block; }
+</style>
+
+<section
+  class="email-signup section-padding"
+  id="EmailSignup-{{ section.id }}"
+  aria-label="{{ section.settings.heading | default: 'Newsletter signup' }}"
+>
+  <div class="page-width">
+    <div class="email-signup__inner">
+
+      <!-- Left: copy -->
+      <div class="email-signup__copy">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="email-signup__eyebrow">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        <h2 class="email-signup__title">{{ section.settings.heading | default: 'Grow with us.' }}</h2>
+        <p class="email-signup__desc">{{ section.settings.description | default: 'Join the She Grow community for hair tips, early access to new launches, and 10% off your first order.' }}</p>
+        <ul class="email-signup__perks" aria-label="Subscriber benefits">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'perk' and block.settings.perk_text != blank -%}
+              <li class="email-signup__perk" {{ block.shopify_attributes }}>{{ block.settings.perk_text }}</li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      <!-- Right: form -->
+      <div class="email-signup__form-wrap">
+        <div
+          class="email-form__success"
+          id="EmailSuccess-{{ section.id }}"
+          role="status"
+          aria-live="polite"
+        >
+          <p>
+            <strong>Welcome to the She Grow family!</strong>
+            Check your inbox for your 10% off code and first hair care tips.
+          </p>
+        </div>
+
+        {%- form 'customer', id: 'EmailForm-' | append: section.id -%}
+          <input type="hidden" name="contact[tags]" value="newsletter, she-grow-subscriber">
+
+          <div class="email-form" novalidate>
+            <label for="EmailInput-{{ section.id }}" class="visually-hidden">Email address</label>
+            <input
+              type="email"
+              id="EmailInput-{{ section.id }}"
+              name="contact[email]"
+              class="email-form__input"
+              placeholder="{{ section.settings.placeholder | default: 'Your email address' }}"
+              autocomplete="email"
+              required
+              aria-required="true"
+              aria-describedby="EmailError-{{ section.id }}"
+            >
+            <button type="submit" class="email-form__btn">
+              {{ section.settings.button_label | default: 'Subscribe' }}
+            </button>
+          </div>
+          <p class="email-form__error" id="EmailError-{{ section.id }}" role="alert"></p>
+        {%- endform -%}
+
+        <p class="email-signup__privacy">
+          {{ section.settings.privacy_note | default: 'No spam, ever. Unsubscribe any time.' }}
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  var form       = document.getElementById('EmailForm-{{ section.id }}');
+  var successEl  = document.getElementById('EmailSuccess-{{ section.id }}');
+  var errorEl    = document.getElementById('EmailError-{{ section.id }}');
+  var input      = document.getElementById('EmailInput-{{ section.id }}');
+
+  if (!form) return;
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var email = input ? input.value.trim() : '';
+
+    // Basic validation
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      if (errorEl) {
+        errorEl.textContent = 'Please enter a valid email address.';
+        errorEl.classList.add('is-visible');
+      }
+      if (input) input.focus();
+      return;
+    }
+
+    if (errorEl) errorEl.classList.remove('is-visible');
+
+    var btn = form.querySelector('.email-form__btn');
+    if (btn) { btn.textContent = 'Subscribing…'; btn.disabled = true; }
+
+    // Submit to Shopify customer newsletter
+    fetch('/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form)).toString()
+    })
+    .then(function() {
+      form.style.display = 'none';
+      if (successEl) successEl.classList.add('is-visible');
+    })
+    .catch(function() {
+      if (btn) { btn.textContent = '{{ section.settings.button_label | default: "Subscribe" }}'; btn.disabled = false; }
+      if (errorEl) {
+        errorEl.textContent = 'Something went wrong. Please try again.';
+        errorEl.classList.add('is-visible');
+      }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Email Signup",
+  "tag": "section",
+  "class": "section-email-signup",
+  "settings": [
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Background color",
+      "options": [
+        { "value": "earthy",    "label": "Sienna (primary)" },
+        { "value": "botanical", "label": "Moss green (botanical)" },
+        { "value": "surface",   "label": "Surface (light)" }
+      ],
+      "default": "earthy"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "Join the Community"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Grow with us."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Join the She Grow community for hair tips, first access to new launches, and 10% off your first order."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Input placeholder text",
+      "default": "Your email address"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "privacy_note",
+      "label": "Privacy note",
+      "default": "No spam, ever. Unsubscribe any time."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "perk",
+      "name": "Subscriber Perk",
+      "settings": [
+        {
+          "type": "text",
+          "id": "perk_text",
+          "label": "Perk text",
+          "default": "10% off your first order"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Email Signup",
+      "blocks": [
+        { "type": "perk", "settings": { "perk_text": "10% off your first order" } },
+        { "type": "perk", "settings": { "perk_text": "Early access to new launches" } },
+        { "type": "perk", "settings": { "perk_text": "Exclusive hair care guides & tutorials" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

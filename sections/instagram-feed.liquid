@@ -1,0 +1,463 @@
+{% comment %}
+  sections/instagram-feed.liquid
+  She Grow Hair Co. — Instagram / Social Proof Grid
+  Online Store 2.0 compatible
+
+  Note: For live Instagram data, connect an app like Instafeed, Covet Pics,
+  or Foursixty in the Shopify App Store. This section provides a beautiful
+  static placeholder grid with full schema configuration, ready to swap
+  for app-injected content.
+{% endcomment %}
+
+<style>
+  /* =============================================
+     INSTAGRAM FEED — She Grow Hair Co.
+     ============================================= */
+  .instagram-section {
+    background-color: var(--color-background);
+  }
+
+  .instagram-section__header {
+    text-align: center;
+    margin-bottom: var(--space-10);
+  }
+
+  .instagram-section__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    font-weight: 400;
+    color: var(--color-foreground);
+    line-height: 1.1;
+    margin-bottom: var(--space-3);
+  }
+
+  .instagram-section__handle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: rgba(44,26,14,0.55);
+    text-decoration: none;
+    transition: color var(--transition-base);
+  }
+
+  .instagram-section__handle:hover { color: var(--color-primary); }
+
+  .instagram-section__handle svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Grid layout */
+  .instagram-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-1);
+  }
+
+  @media (min-width: 768px) {
+    .instagram-grid {
+      gap: var(--space-2);
+      grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    }
+  }
+
+  /* Instagram post tile */
+  .instagram-tile {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-surface);
+    aspect-ratio: 1 / 1;
+  }
+
+  .instagram-tile__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: block;
+  }
+
+  .instagram-tile:hover .instagram-tile__img {
+    transform: scale(1.05);
+  }
+
+  /* Hover overlay */
+  .instagram-tile__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(44,26,14,0.55);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+
+  .instagram-tile:hover .instagram-tile__overlay,
+  .instagram-tile:focus-within .instagram-tile__overlay {
+    opacity: 1;
+  }
+
+  .instagram-tile__caption {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 300;
+    color: rgba(255,255,255,0.85);
+    text-align: center;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .instagram-tile__stats {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .instagram-stat {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: 0.04em;
+  }
+
+  .instagram-stat svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Featured tile (spans 2 cols on desktop) */
+  .instagram-tile--featured {
+    grid-column: span 1;
+  }
+
+  @media (min-width: 768px) {
+    .instagram-tile--featured { grid-column: span 2; grid-row: span 2; }
+  }
+
+  /* Placeholder tile */
+  .instagram-tile--placeholder {
+    background: linear-gradient(
+      135deg,
+      var(--color-surface) 0%,
+      var(--color-border) 50%,
+      var(--color-surface) 100%
+    );
+  }
+
+  .instagram-tile--placeholder svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    color: rgba(44,26,14,0.15);
+  }
+
+  /* CTA below grid */
+  .instagram-section__cta {
+    text-align: center;
+    margin-top: var(--space-8);
+  }
+
+  .instagram-follow-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+    text-decoration: none;
+    border-bottom: 1.5px solid var(--color-foreground);
+    padding-bottom: 2px;
+    transition: color var(--transition-base), border-color var(--transition-base);
+  }
+
+  .instagram-follow-btn:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .instagram-follow-btn svg { width: 18px; height: 18px; }
+
+  /* App integration notice (hidden on live site) */
+  .instagram-app-notice {
+    background-color: var(--color-surface);
+    border: 1px dashed var(--color-border);
+    padding: var(--space-6);
+    text-align: center;
+    display: none;
+  }
+
+  .shopify-section-editor .instagram-app-notice { display: block; }
+
+  .instagram-app-notice p {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: rgba(44,26,14,0.55);
+    max-width: none;
+    line-height: 1.6;
+  }
+
+  .instagram-app-notice a {
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+</style>
+
+<section
+  class="instagram-section section-padding"
+  id="InstagramFeed-{{ section.id }}"
+  aria-label="Instagram feed — {{ section.settings.handle | default: '@shegrowhairco' }}"
+>
+  <div class="page-width">
+
+    <div class="instagram-section__header">
+      <span class="eyebrow">{{ section.settings.eyebrow | default: 'Community' }}</span>
+      <h2 class="instagram-section__title">{{ section.settings.heading | default: 'Real hair. Real results.' }}</h2>
+      {%- if section.settings.handle != blank -%}
+        <a
+          href="https://www.instagram.com/{{ section.settings.handle | remove: '@' }}/"
+          class="instagram-section__handle"
+          target="_blank"
+          rel="noopener"
+          aria-label="Follow She Grow Hair Co. on Instagram"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+          </svg>
+          @{{ section.settings.handle | default: 'shegrowhairco' | remove: '@' }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%}
+      Instagram App Integration Note:
+      Replace this grid with your Instagram app's embed code/tag.
+      Recommended apps: Instafeed (free), Covet Pics, Foursixty.
+      The id="InstagramAppTarget" div can be used as the mount point.
+    {%- endcomment -%}
+
+    <div id="InstagramAppTarget-{{ section.id }}">
+
+      {%- if section.blocks.size > 0 -%}
+
+        <div class="instagram-grid" role="list" aria-label="Instagram photos">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'post' -%}
+              <div
+                class="instagram-tile{% if block.settings.featured %} instagram-tile--featured{% endif %}"
+                role="listitem"
+                {{ block.shopify_attributes }}
+              >
+                {%- if block.settings.post_link != blank -%}
+                  <a href="{{ block.settings.post_link }}" target="_blank" rel="noopener" aria-label="{{ block.settings.caption | default: 'View on Instagram' | truncate: 60 }}">
+                {%- endif -%}
+
+                {%- if block.settings.post_image != blank -%}
+                  {{
+                    block.settings.post_image
+                    | image_url: width: 600
+                    | image_tag:
+                      class: 'instagram-tile__img',
+                      alt: block.settings.caption | default: 'She Grow Hair Co. on Instagram',
+                      loading: 'lazy',
+                      widths: '300, 450, 600',
+                      sizes: '(min-width: 768px) 16vw, 33vw'
+                  }}
+                {%- else -%}
+                  <div class="instagram-tile--placeholder" style="width:100%;height:100%;position:relative;aspect-ratio:1/1;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                  </div>
+                {%- endif -%}
+
+                <div class="instagram-tile__overlay" aria-hidden="true">
+                  {%- if block.settings.caption != blank -%}
+                    <p class="instagram-tile__caption">{{ block.settings.caption | truncate: 100 }}</p>
+                  {%- endif -%}
+                  <div class="instagram-tile__stats">
+                    {%- if block.settings.likes != blank -%}
+                      <span class="instagram-stat">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                        {{ block.settings.likes }}
+                      </span>
+                    {%- endif -%}
+                    {%- if block.settings.comments != blank -%}
+                      <span class="instagram-stat">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                        {{ block.settings.comments }}
+                      </span>
+                    {%- endif -%}
+                  </div>
+                </div>
+
+                {%- if block.settings.post_link != blank -%}
+                  </a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+      {%- else -%}
+
+        {%- comment -%} Placeholder grid when no blocks added {%- endcomment -%}
+        <div class="instagram-grid" aria-label="Instagram placeholder grid" aria-hidden="true">
+          {%- for i in (1..6) -%}
+            <div class="instagram-tile instagram-tile--placeholder">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <div class="instagram-app-notice">
+          <p>
+            <strong>Connect an Instagram app</strong> to display your live feed here.<br>
+            Recommended: <a href="https://apps.shopify.com/instafeed" target="_blank" rel="noopener">Instafeed</a> (free),
+            <a href="https://apps.shopify.com/covet-pics" target="_blank" rel="noopener">Covet Pics</a>, or
+            <a href="https://foursixty.com" target="_blank" rel="noopener">Foursixty</a>.
+            Or add posts manually using the blocks below.
+          </p>
+        </div>
+
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_follow_cta and section.settings.handle != blank -%}
+      <div class="instagram-section__cta">
+        <a
+          href="https://www.instagram.com/{{ section.settings.handle | remove: '@' }}/"
+          class="instagram-follow-btn"
+          target="_blank"
+          rel="noopener"
+          aria-label="Follow She Grow Hair Co. on Instagram"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+          </svg>
+          Follow {{ section.settings.handle | default: '@shegrowhairco' }}
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Instagram Feed",
+  "tag": "section",
+  "class": "section-instagram",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "Community"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Real hair. Real results."
+    },
+    {
+      "type": "text",
+      "id": "handle",
+      "label": "Instagram handle",
+      "default": "@shegrowhairco",
+      "info": "Include the @ symbol."
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns (desktop)",
+      "options": [
+        { "value": "4", "label": "4 columns" },
+        { "value": "5", "label": "5 columns" },
+        { "value": "6", "label": "6 columns" }
+      ],
+      "default": "6"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_follow_cta",
+      "label": "Show Follow button",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "post",
+      "name": "Instagram Post",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "post_image",
+          "label": "Post image"
+        },
+        {
+          "type": "url",
+          "id": "post_link",
+          "label": "Link to Instagram post"
+        },
+        {
+          "type": "textarea",
+          "id": "caption",
+          "label": "Caption (shown on hover)"
+        },
+        {
+          "type": "text",
+          "id": "likes",
+          "label": "Like count (shown on hover)",
+          "info": "e.g. 1.2k"
+        },
+        {
+          "type": "text",
+          "id": "comments",
+          "label": "Comment count (shown on hover)"
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Feature this post (2×2 size)",
+          "default": false,
+          "info": "Makes this post span 2 columns and 2 rows on desktop."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram Feed"
+    }
+  ]
+}
+{% endschema %}
+

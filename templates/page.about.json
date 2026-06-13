@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "about_content": {
+      "type": "about",
+      "settings": {
+        "story_body_1": "She Grow Hair Co. started the way most great things do — with a problem that needed solving. After years of searching for products that truly understood textured hair, our founder took matters into her own hands. She studied botanical ingredients, spent months testing formulas, and listened deeply to the women in her community.",
+        "story_body_2": "What emerged wasn't just a product line — it was a philosophy. Hair health isn't about trends. It's about understanding your individual hair's needs, feeding it the right nutrients, and giving it the patience and ritual it deserves.",
+        "founder_quote": "I wanted to create something I wish I'd had — a line that sees my hair the way I see it. As something worth celebrating, not something to be managed.",
+        "founder_name": "— Founder, She Grow Hair Co."
+      }
+    }
+  },
+  "order": [
+    "about_content"
+  ]
+}
+
